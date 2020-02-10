@@ -22,3 +22,5 @@ Corporate partners will get a coupon code. When this code is entered by the cost
 costumer will get a discounted partner-price and the corporate-partner will get a commission for the sale.
 
 This means our widget does not only save money. It also allows value added sales.
+
+Check out the [Quickstart](VG-QuickStart.md) for more information about the integration into your website.
