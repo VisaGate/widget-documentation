@@ -1,0 +1,190 @@
+openapi: 3.0.0
+
+
+info: 
+  description: 
+    "This API allows third party applications to retrieve information regarding whether visa requirements 
+    for travellers of certain countries are met. These endpoints allow n:m joins of countries and travellers, 
+    feel free to add as many as needed.
+    
+    The Visa-gate Discovery API does not require authentication."
+  version: 0.0.1 (2020 - May)
+  title: Visa-gate Discovery
+  termsOfService: https://visa-gate.com/de/agb
+  contact:
+    email:
+      - markus.glatz@visa-gate.com
+      - raphael.mahir@visa-gate.com
+      - cesar.bretschneider@visa-gate.com
+    license:
+      name: proprietary
+
+
+tags:
+  - name: country
+    description: A country the passenger may wish to travel to.
+
+  - name: passenger
+    description: A single individual travelling to a certain country
+
+  - name: route
+    description: A route is a combination of country + purpose. For example, a business trip to India or a leisure trip to the US
+
+  - name: document
+    description: A document is any passport, visa or similar document that provides access to a country either on it's own or in combination with other documents
+
+  - name: candidate
+    description: these are used by the API as a response. A candidate is a set of documents that the passenger can use to enter a country and that they all either already posess or can acquire.
+
+servers:
+  - url: https://discovery.visa-gate.com
+    description: Production environment
+  - url: https://api.stage.visa-gate.com
+    description: Staging environment
+
+paths:
+  /search/find/document/{search}.json:
+    get:
+      tags:
+        - document
+      summary:
+      description: 
+      operationId:
+      responses:
+        "200":
+          description: When the search was successfully executed
+        "429":
+          description: The search request was not fulfilled due to rate-limiting policies
+        "500":
+          description: If the search failed and the server could not handle the request
+        "504":
+          description: The server was unable to process the request before it reached a timeout condition
+    parameters:
+      - name: search
+        in : path
+        description: A user provided search string
+        required: true
+        schema:
+          type: string
+  
+  /search/find/country/{search}.json:
+    get:
+      tags:
+        - country
+      summary:
+      description: 
+      operationId:
+      responses:
+        "200":
+          description: When the search was successfully executed
+        "429":
+          description: The server did not fulfill the request due to rate-limiting policies
+        "500":
+          description: If the search failed and the server could not handle the request
+        "504":
+          description: The server was unable to process the request before it reached a timeout condition
+    parameters:
+      - name: search
+        in : path
+        description: A user provided search string
+        required: true
+        schema:
+          type: string
+          
+  /itinerary/test.json:
+    post:
+      tags:
+        - passenger
+        - route
+        - candidate
+      summary: Calculates the candidate document sets that a customer could buy to enter the countries they indicated for the reasons they provided. 
+      description: Your request will need to provide additional data for the passengers.
+      operationId: itinerary
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                people:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Passenger"
+                stops:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Route"
+            examples:
+              single:
+                summary: German citizen travelling to Afghanistan for Business purposes
+                externalValue: 'https://raw.githubusercontent.com/VisaGate/widget-documentation/master/api/examples/single.json'
+              multiple:
+                summary: German citizen travelling to several destinations for various purposes
+                externalValue: 'https://raw.githubusercontent.com/VisaGate/widget-documentation/master/api/examples/multiple.json'
+      responses:
+        "200":
+          description: The itinerary could be properly calculated and is returned in the body of the response.
+        "500":
+          description: The server could not process the request and has failed.
+     
+
+externalDocs:
+  decription: Learn more about Visa-gate and our API
+  url: https://visa-gate.com
+  
+components:
+  requestBodies:
+  schemas:
+    Candidate:
+      type: object
+      properties: 
+        documents:
+          type: array
+          items:
+            $ref: "#/components/schemas/Document"
+    Product:
+      type: object
+      items:
+        id:
+          type: integer
+        url:
+          type: string
+        price:
+          type: object
+          items:
+            amt:
+              type: int
+            natural:
+              type: string
+            currency:
+              type: string
+    Route:
+      type: object
+      properties:
+        country:
+          type: string
+          default: DE
+        reason:
+          type: string
+          default: tourist
+          enum: ["business", "tourist", "student"]
+    Document:
+      type: object
+      properties:
+        identifier:
+          type: string
+        name:
+          type: string
+        recommended:
+          type: boolean
+        product:
+          $ref: "#/components/schemas/Product"
+    Passenger:
+      type: object
+      properties:
+        name:
+          type: string
+        documents:
+          type: array
+          items:
+            type: string
