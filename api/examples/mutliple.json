@@ -1,0 +1,13 @@
+{
+	"people": [
+		{
+			"name" : "Gandalf the grey",
+			"documents" : ["PDE"]
+		}
+	],
+	"stops": [
+		{"country" : "AF", "reason" : "business"},
+		{"country" : "DE", "reason" : "tourist"},
+		{"country" : "US", "reason" : "tourist"}
+	]
+}
