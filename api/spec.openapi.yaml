@@ -2,12 +2,9 @@ openapi: 3.0.0
 
 
 info: 
-  description: 
-    "This API allows third party applications to retrieve information regarding whether visa requirements 
+  description: "This API allows third party applications to retrieve information regarding whether visa requirements 
     for travellers of certain countries are met. These endpoints allow n:m joins of countries and travellers, 
-    feel free to add as many as needed.
-    
-    The Visa-gate Discovery API does not require authentication."
+    feel free to add as many as needed. The Visa-gate Discovery API does not require authentication."
   version: 0.0.1 (2020 - May)
   title: Visa-gate Discovery
   termsOfService: https://visa-gate.com/de/agb
