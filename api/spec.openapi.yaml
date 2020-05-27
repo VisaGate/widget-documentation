@@ -2,11 +2,20 @@ openapi: 3.0.0
 
 
 info: 
-  description: 
-    "This API allows third party applications to retrieve information regarding whether visa requirements 
+  description: |
+    This API allows third party applications to retrieve information regarding whether visa requirements 
     for travellers of certain countries are met. These endpoints allow n:m joins of countries and travellers, 
     feel free to add as many as needed. 
-    The Visa-gate Discovery API does not require authentication."
+
+    # Errors
+    The Visa-Gate discovery API will provide you with common error codes whenever the application fails. 
+    Common codes include 400 for bad request, 401 for unathorized and 403 for forbidden, as well as 429 for rate-limiting
+    and 50x for any server related issues.
+
+    # Authentication
+    The Visa-gate Discovery API does not require authentication. Future revisions of the API may provide authentication, please
+    refer to this document when needed.
+
   version: 0.0.1 (2020 - May)
   title: Visa-gate Discovery
   termsOfService: https://visa-gate.com/de/agb
@@ -20,20 +29,14 @@ info:
 
 
 tags:
-  - name: country
+  - name: Country
     description: A country the passenger may wish to travel to.
 
-  - name: passenger
-    description: A single individual travelling to a certain country
-
-  - name: route
-    description: A route is a combination of country + purpose. For example, a business trip to India or a leisure trip to the US
-
-  - name: document
+  - name: Document
     description: A document is any passport, visa or similar document that provides access to a country either on it's own or in combination with other documents
 
-  - name: candidate
-    description: these are used by the API as a response. A candidate is a set of documents that the passenger can use to enter a country and that they all either already posess or can acquire.
+  - name: Itinerary
+    description: A route is a combination of country + purpose. For example, a business trip to India or a leisure trip to the US
 
 servers:
   - url: https://discovery.visa-gate.com
@@ -42,16 +45,31 @@ servers:
     description: Staging environment
 
 paths:
-  "/search/find/document/{search}.json":
+  "/search/find/document/{type}/{search}.json":
     get:
       tags:
-        - document
-      summary:
-      description: 
-      operationId:
+        - Document
+      summary: Locates a document and it's identifier
+      description: |
+        Unlike countries, documents do not have a standard naming convention, so Visa-Gate uses a proprietary identifier system to make documents identifiable. This code uses the following structure
+
+        ## For passports
+        Generating a passport ID is realy simple, just prefix the country's ISO3166-Alpha2 code with a "P". For example, for Germany this would become `PDE`
+
+        ## For visa
+        Visa are more varied and complicated, this is why here our code looks like the following `V` for Visa, followed by the country's ISO 3166 code, followed by a purpose identifier which can be 
+
+        * `TO` for tourists
+        * `BB` for business
+        * `ST` for student
+
+        and finally the maximum duration a passenger could stay in the country with the Visa.
+
+        *Important note*: These codes have information for disambiguation added, and are often manually adjusted, and therefore should be considered as a 'read-only' mechanism. It makes it easy for developers to understand which Visa the user is searching for when dealing with these codes in logs, but they are not reliably generated and therefore should not be relied upon.
+      operationId: documentSearch
       responses:
         "200":
-          description: When the search was successfully executed
+          description: The search was successfully completed and the results are in the body of the response.
         "429":
           description: The search request was not fulfilled due to rate-limiting policies
         "500":
@@ -59,6 +77,12 @@ paths:
         "504":
           description: The server was unable to process the request before it reached a timeout condition
     parameters:
+      - name: type
+        in : path
+        description: Whether the system should be searching for Visa or Passports
+        required: true
+        schema:
+          type: string
       - name: search
         in : path
         description: A user provided search string
@@ -69,13 +93,33 @@ paths:
   "/search/find/country/{search}.json":
     get:
       tags:
-        - country
-      summary:
-      description: 
+        - Country
+      summary: Search for a country
+      description: |
+        The API requires you to provide an ISO3166-Alpha2 code to search for a visa for a certain country. Since the ISO3166 standard is extremely common, it is normal for users to know a few of the ISO codes by heart, but most people do not know all of them.
+
+        Using this endpoint allows your application to autocomplete and suggest countries to a customer whenever they input data. The server will attempt to match your search to common terms that relate to the country.
       operationId:
       responses:
         "200":
-          description: When the search was successfully executed
+          description: When the search was successfully executed.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resource:
+                    type: string
+                    description: The ISO 3166-Alpha2 Code for the country
+                  flag:
+                    type: string
+                    description: A URL to the flag of the country
+                  name:
+                    type: string
+                    description: The name of the country
+              examples:
+                - summary: German citizen travelling to Afghanistan for Business purposes
+                  externalValue: 'examples/search/response.json'
         "429":
           description: The server did not fulfill the request due to rate-limiting policies
         "500":
@@ -89,14 +133,25 @@ paths:
         required: true
         schema:
           type: string
-          
+      - name: hl
+        in : query
+        description: The language the API should localise the response in. In case an invalid language is passed the system will revert to the default DE value
+        required: false
+        schema:
+          type: string
+          default: DE
+          enum: [DE, EN]
+       
   /itinerary/test.json:
     post:
       tags:
-        - route
-      summary: Calculates the candidate document sets that a customer could buy to enter the countries they indicated for the reasons they provided. 
-      description: Your request will need to provide additional data for the passengers.
-      operationId: itinerary
+        - Itinerary
+      summary: Calculate visa requirements
+      description: |
+        Calculates the candidate document sets that a customer could buy to enter the countries they indicated for the reasons they provided. Your request will need to provide additional data for the passengers.
+
+        This is the endpoint that provides the API's core functionality and the most complicated provided by this API. It produces a slightly verbose output that will require some dedication to understand.
+      operationId: Itinerary
       requestBody:
         content:
           application/json:
@@ -118,9 +173,56 @@ paths:
               multiple:
                 summary: German citizen travelling to several destinations for various purposes
                 externalValue: 'https://raw.githubusercontent.com/VisaGate/widget-documentation/master/api/examples/multiple.json'
+      parameters:
+        - name: hl
+          in : query
+          description: The language the API should localise the response in. In case an invalid language is passed the system will revert to the default DE value
+          required: false
+          schema:
+            type: string
+            default: DE
+            enum: [DE, EN]
       responses:
         "200":
           description: The itinerary could be properly calculated and is returned in the body of the response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                      required: true
+                      description: The name of the passenger / this is just a human readable string to identify multiple people, it serves no purpose to the API and the system will ignore if the field is left empty.
+                    documents:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/Document"
+                    stops:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          country:
+                            $ref: "#/components/schemas/Country"
+                          reason:
+                            type: string
+                          granted:
+                            type: boolean
+                          candidates:
+                            type: array
+                            items:
+                              $ref: "#/components/schemas/Candidate"
+                          grants:
+                            $ref:  "#/components/schemas/Candidate"
+                          evaluated:
+                            type: integer
+                            description: The cost of the search (for debugging purposes)
+              examples:
+                - summary: German citizen travelling to Afghanistan for Business purposes
+                  externalValue: 'examples/itinerary/response.json'
         "500":
           description: The server could not process the request and has failed.
 
@@ -181,6 +283,8 @@ components:
         recommended:
           type: boolean
           example: false
+          required: false
+          description: When the API responds, it will sometimes use this flag to indicate that a document is a common and recommendable choice.
         product:
           $ref: "#/components/schemas/Product"
     Passport:

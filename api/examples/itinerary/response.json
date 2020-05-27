@@ -1,0 +1,275 @@
+{
+	"payload": [
+	  {
+		"name": "Gandalf the grey",
+		"documents": [
+		  {
+			"name": "Pass (ANDORRA)",
+			"type": "passport",
+			"id": "PAD"
+		  }
+		],
+		"stops": [
+		  {
+			"country": {
+			  "ISO": "AU",
+			  "name": "AUSTRALIEN"
+			},
+			"reason": "business",
+			"granted": false,
+			"candidates": [
+			  {
+				"documents": [
+				  {
+					"identifier": "VAUBB90",
+					"name": "Australien Temporary Work (Short Stay Specialist) Visum (bis 90 Tage)",
+					"recommended": false,
+					"product": {
+					  "id": 293,
+					  "url": "https:\/\/www.visa-gate.com\/node\/293",
+					  "price": {
+						"amt": "29552",
+						"natural": "295.52",
+						"currency": "EUR"
+					  }
+					}
+				  },
+				  {
+					"identifier": "PAD",
+					"name": "Pass (ANDORRA)",
+					"recommended": false,
+					"product": null
+				  }
+				]
+			  }
+			],
+			"grants": null,
+			"_rid": "511",
+			"evaluated": 219
+		  },
+		  {
+			"country": {
+			  "ISO": "DE",
+			  "name": "DEUTSCHLAND"
+			},
+			"reason": "tourist",
+			"granted": true,
+			"candidates": [],
+			"grants": [
+			  [
+				[
+				  "PAD",
+				  "Pass (ANDORRA)"
+				]
+			  ]
+			],
+			"_rid": "75",
+			"evaluated": 95
+		  },
+		  {
+			"country": {
+			  "ISO": "US",
+			  "name": "VEREINIGTE STAATEN VON AMERIKA"
+			},
+			"reason": "tourist",
+			"granted": false,
+			"candidates": [
+			  {
+				"documents": [
+				  {
+					"identifier": "VUSTO90",
+					"name": "USA ESTA Visum (max. 90 Tage) (bis 90 Tage)",
+					"recommended": false,
+					"product": {
+					  "id": 56,
+					  "url": "https:\/\/www.visa-gate.com\/node\/56",
+					  "price": {
+						"amt": "3900",
+						"natural": "39.00",
+						"currency": "EUR"
+					  }
+					}
+				  },
+				  {
+					"identifier": "PAD",
+					"name": "Pass (ANDORRA)",
+					"recommended": false,
+					"product": null
+				  }
+				]
+			  },
+			  {
+				"documents": [
+				  {
+					"identifier": "VUSTO6M",
+					"name": "USA B1 \/ B2 Visum (bis 6 Monate)",
+					"recommended": false,
+					"product": {
+					  "id": 554,
+					  "url": "https:\/\/www.visa-gate.com\/node\/554",
+					  "price": {
+						"amt": "26900",
+						"natural": "269.00",
+						"currency": "EUR"
+					  }
+					}
+				  }
+				]
+			  }
+			],
+			"grants": null,
+			"_rid": "555",
+			"evaluated": 45
+		  }
+		]
+	  },
+	  {
+		"name": "Frodo",
+		"documents": [
+		  {
+			"name": "Pass (DEUTSCHLAND)",
+			"type": "passport",
+			"id": "PDE"
+		  }
+		],
+		"stops": [
+		  {
+			"country": {
+			  "ISO": "AU",
+			  "name": "AUSTRALIEN"
+			},
+			"reason": "business",
+			"granted": false,
+			"candidates": [
+			  {
+				"documents": [
+				  {
+					"identifier": "VAUBB1Y",
+					"name": "Australien Working Holiday Visum (1 Jahr)",
+					"recommended": false,
+					"product": {
+					  "id": 164,
+					  "url": "https:\/\/www.visa-gate.com\/node\/164",
+					  "price": {
+						"amt": "43200",
+						"natural": "432.00",
+						"currency": "EUR"
+					  }
+					}
+				  },
+				  {
+					"identifier": "PDE",
+					"name": "Pass (DEUTSCHLAND)",
+					"recommended": false,
+					"product": null
+				  }
+				]
+			  },
+			  {
+				"documents": [
+				  {
+					"identifier": "VAUBB90",
+					"name": "Australien Temporary Work (Short Stay Specialist) Visum (bis 90 Tage)",
+					"recommended": false,
+					"product": {
+					  "id": 293,
+					  "url": "https:\/\/www.visa-gate.com\/node\/293",
+					  "price": {
+						"amt": "29552",
+						"natural": "295.52",
+						"currency": "EUR"
+					  }
+					}
+				  },
+				  {
+					"identifier": "PDE",
+					"name": "Pass (DEUTSCHLAND)",
+					"recommended": false,
+					"product": null
+				  }
+				]
+			  }
+			],
+			"grants": null,
+			"_rid": "511",
+			"evaluated": 219
+		  },
+		  {
+			"country": {
+			  "ISO": "DE",
+			  "name": "DEUTSCHLAND"
+			},
+			"reason": "tourist",
+			"granted": true,
+			"candidates": [],
+			"grants": [
+			  [
+				[
+				  "PDE",
+				  "Pass (DEUTSCHLAND)"
+				]
+			  ]
+			],
+			"_rid": "75",
+			"evaluated": 95
+		  },
+		  {
+			"country": {
+			  "ISO": "US",
+			  "name": "VEREINIGTE STAATEN VON AMERIKA"
+			},
+			"reason": "tourist",
+			"granted": false,
+			"candidates": [
+			  {
+				"documents": [
+				  {
+					"identifier": "VUSTO90",
+					"name": "USA ESTA Visum (max. 90 Tage) (bis 90 Tage)",
+					"recommended": false,
+					"product": {
+					  "id": 56,
+					  "url": "https:\/\/www.visa-gate.com\/node\/56",
+					  "price": {
+						"amt": "3900",
+						"natural": "39.00",
+						"currency": "EUR"
+					  }
+					}
+				  },
+				  {
+					"identifier": "PDE",
+					"name": "Pass (DEUTSCHLAND)",
+					"recommended": false,
+					"product": null
+				  }
+				]
+			  },
+			  {
+				"documents": [
+				  {
+					"identifier": "VUSTO6M",
+					"name": "USA B1 \/ B2 Visum (bis 6 Monate)",
+					"recommended": false,
+					"product": {
+					  "id": 554,
+					  "url": "https:\/\/www.visa-gate.com\/node\/554",
+					  "price": {
+						"amt": "26900",
+						"natural": "269.00",
+						"currency": "EUR"
+					  }
+					}
+				  }
+				]
+			  }
+			],
+			"grants": null,
+			"_rid": "555",
+			"evaluated": 45
+		  }
+		]
+	  }
+	],
+	"request": "--Shortened for brevity--"
+  }
