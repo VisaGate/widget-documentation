@@ -1,1 +1,77 @@
-[{"resource":"TD","flag":"https:\/\/discovery.visa-gate.com\/image\/flag\/TD\/","coordinates":["15.454166","18.732207"],"name":"TSCHAD"},{"resource":"CL","flag":"https:\/\/discovery.visa-gate.com\/image\/flag\/CL\/","coordinates":["-35.675147","-71.542969"],"name":"CHILE"},{"resource":"CN","flag":"https:\/\/discovery.visa-gate.com\/image\/flag\/CN\/","coordinates":["35.86166","104.195397"],"name":"CHINA"},{"resource":"CX","flag":"https:\/\/discovery.visa-gate.com\/image\/flag\/CX\/","coordinates":["-10.447525","105.690449"],"name":"WEIHNACHTSINSEL"},{"resource":"CH","flag":"https:\/\/discovery.visa-gate.com\/image\/flag\/CH\/","coordinates":["46.818188","8.227512"],"name":"SCHWEIZ"},{"resource":"TW","flag":"https:\/\/discovery.visa-gate.com\/image\/flag\/TW\/","coordinates":["23.69781","120.960515"],"name":"TAIWAN, PROVINZ CHINAS"}]
+[
+	{
+		"resource": "TD",
+		"flag": "https:\/\/discovery.visa-gate.com\/image\/flag\/TD\/",
+		"coordinates": [
+			"15.454166",
+			"18.732207"
+		],
+		"name": "TSCHAD",
+		"keywords": [
+			"TSCHAD"
+		]
+	},
+	{
+		"resource": "CL",
+		"flag": "https:\/\/discovery.visa-gate.com\/image\/flag\/CL\/",
+		"coordinates": [
+			"-35.675147",
+			"-71.542969"
+		],
+		"name": "CHILE",
+		"keywords": [
+			"CHILE"
+		]
+	},
+	{
+		"resource": "CN",
+		"flag": "https:\/\/discovery.visa-gate.com\/image\/flag\/CN\/",
+		"coordinates": [
+			"35.86166",
+			"104.195397"
+		],
+		"name": "CHINA",
+		"keywords": [
+			"CHINA",
+			"Chinesische Mauer",
+			"Peking"
+		]
+	},
+	{
+		"resource": "CX",
+		"flag": "https:\/\/discovery.visa-gate.com\/image\/flag\/CX\/",
+		"coordinates": [
+			"-10.447525",
+			"105.690449"
+		],
+		"name": "WEIHNACHTSINSEL",
+		"keywords": [
+			"WEIHNACHTSINSEL"
+		]
+	},
+	{
+		"resource": "CH",
+		"flag": "https:\/\/discovery.visa-gate.com\/image\/flag\/CH\/",
+		"coordinates": [
+			"46.818188",
+			"8.227512"
+		],
+		"name": "SCHWEIZ",
+		"keywords": [
+			"SCHWEIZ",
+			"Kaese"
+		]
+	},
+	{
+		"resource": "TW",
+		"flag": "https:\/\/discovery.visa-gate.com\/image\/flag\/TW\/",
+		"coordinates": [
+			"23.69781",
+			"120.960515"
+		],
+		"name": "TAIWAN, PROVINZ CHINAS",
+		"keywords": [
+			"TAIWAN, PROVINZ CHINAS"
+		]
+	}
+]

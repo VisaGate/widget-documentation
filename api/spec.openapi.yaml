@@ -16,7 +16,7 @@ info:
     The Visa-gate Discovery API does not require authentication. Future revisions of the API may provide authentication, please
     refer to this document when needed.
 
-  version: 0.0.1 (2020 - May)
+  version: 0.0.2 (2020 - November)
   title: Visa-gate Discovery
   termsOfService: https://visa-gate.com/de/agb
   contact:
@@ -70,6 +70,28 @@ paths:
       responses:
         "200":
           description: The search was successfully completed and the results are in the body of the response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resource:
+                    type: string
+                    description: The identifier of the document
+                  type:
+                    type: string
+                    description: Whether it's a passport or a visa
+                  name:
+                    type: string
+                    description: The name of the document
+                  keywords:
+                    type: array
+                    description: The keywords provided with this document
+                    items:
+                      type: string
+              examples:
+                - summary: The German passport
+                  externalValue: 'examples/search/document.json'
         "429":
           description: The search request was not fulfilled due to rate-limiting policies
         "500":
@@ -90,6 +112,77 @@ paths:
         schema:
           type: string
 
+  "/document/detail/{identifier}.json":
+    get:
+      tags:
+        - Document
+      summary: Gets a documents details
+      description: |
+        Gets the details for a given document, together with the associated product (If there is one).
+      operationId: documentDetails
+      responses:
+        "200":
+          description: The search was successfully completed and the results are in the body of the response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    description: The identifier of the document
+                  name:
+                    type: string
+                    description: The name of the document
+                  product:
+                    type: array
+                    description: The product associated with this document. If there is one.
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                          description: The internal product name
+                        url:
+                          type: string
+                          description: The URL to the product on the Visa-Gate.com website
+                        price:
+                          type: array
+                          description: The price of the product
+                          items:
+                            type: object
+                            properties:
+                              amt:
+                                type: string
+                                description: The amount
+                              currency:
+                                type: string
+                                description: The amount's currency
+              examples:
+                - summary: The ESTA E-Visa
+                  externalValue: 'examples/document.json'
+        "429":
+          description: The search request was not fulfilled due to rate-limiting policies
+        "500":
+          description: If the search failed and the server could not handle the request
+        "504":
+          description: The server was unable to process the request before it reached a timeout condition
+    parameters:
+      - name: identifier
+        in: path
+        description: The identifier of the document
+        required: true
+        schema:
+          type: string
+      - name: hl
+        in : query
+        description: The language the API should localise the response in. In case an invalid language is passed the system will revert to the default DE value
+        required: false
+        schema:
+          type: string
+          default: DE
+          enum: [DE, EN]
+
   "/search/find/country/{search}.json":
     get:
       tags:
@@ -99,7 +192,7 @@ paths:
         The API requires you to provide an ISO3166-Alpha2 code to search for a visa for a certain country. Since the ISO3166 standard is extremely common, it is normal for users to know a few of the ISO codes by heart, but most people do not know all of them.
 
         Using this endpoint allows your application to autocomplete and suggest countries to a customer whenever they input data. The server will attempt to match your search to common terms that relate to the country.
-      operationId:
+      operationId: countrySearch
       responses:
         "200":
           description: When the search was successfully executed.
@@ -114,9 +207,19 @@ paths:
                   flag:
                     type: string
                     description: A URL to the flag of the country
+                  coordinates:
+                    type: array
+                    description: The coordinates latitude and longitude
+                    items:
+                      type: string
                   name:
                     type: string
                     description: The name of the country
+                  keywords:
+                    type: array
+                    description: The keywords provided with this country
+                    items:
+                      type: string
               examples:
                 - summary: German citizen travelling to Afghanistan for Business purposes
                   externalValue: 'examples/search/response.json'
@@ -141,7 +244,65 @@ paths:
           type: string
           default: DE
           enum: [DE, EN]
-       
+
+  "/country.json":
+    get:
+      tags:
+        - Country
+      summary: Gets country advisories
+      description: |
+        Using this endpoint allows your application to recive a list with all countries and their current advisory. It delivers the ISO code and the name of the country, as well as the risklevel and a human readable description of this risklevel.
+
+        #### A risklevel can be from 0 up to 4.
+        * `0` undefined (no data available)
+        * `1` normal
+        * `2` caution
+        * `3` avoid
+        * `4` donot
+      operationId: countryAdvisory
+      responses:
+        "200":
+          description: The operation was successfully completed and the results are in the body of the response.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ISO:
+                    type: string
+                    description: The ISO 3166-Alpha2 Code for the country
+                  name:
+                    type: string
+                    description: The name of the country
+                  advisory:
+                    type: array
+                    description: The advisory for this country
+                    items:
+                      type: object
+                      properties:
+                        level:
+                          type: integer
+                          description: The current risklevel (0-4)
+                        name:
+                          type: string
+                          description: The current risklevel as human readable string
+              examples:
+                - summary: German citizen travelling to Afghanistan for Business purposes
+                  externalValue: 'examples/advisory.json'
+        "500":
+          description: If the operation failed and the server could not handle the request
+        "504":
+          description: The server was unable to process the request before it reached a timeout condition
+    parameters:
+      - name: hl
+        in : query
+        description: The language the API should localise the response in. In case an invalid language is passed the system will revert to the default DE value
+        required: false
+        schema:
+          type: string
+          default: DE
+          enum: [DE, EN]
+
   /itinerary/test.json:
     post:
       tags:
